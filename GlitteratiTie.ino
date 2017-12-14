@@ -16,7 +16,7 @@ CRGB cGreen = CRGB(0, cIntensity, 0);
 CRGB cRed = CRGB(cIntensity, 0, 0);
 CRGB colors[6] = { cRed,cRed,cRed, cWhite, cWhite, cWhite  };
 
-#include "fader.h"
+#include "Fader.h"
 #include "TwinklePatterns.h"
 
 void setup() {
