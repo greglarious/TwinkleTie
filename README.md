@@ -1,5 +1,6 @@
 # GlitteratiTie
-This code is for runnng Glitterati on a Holiday Tie
+This code is for runnng Glitterati on a Holiday Tie.
+TL/DR: Rudolph with your tie so bright, turn that thing down before you harm someone's retina.
 
 ## Parts List:
 - Two 15 LED WS2811 strips
