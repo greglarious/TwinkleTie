@@ -1,5 +1,6 @@
-# GlitteratiTie
-This code is for runnng Glitterati on a Holiday Tie.
+# Twinkle
+Tie
+This code is for runnng an RGB LED light show on a holiday necktie.
 TL/DR: Rudolph with your tie so bright, turn that thing down before you harm someone's retina.
 
 ## Parts List:
