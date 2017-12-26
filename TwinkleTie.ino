@@ -10,7 +10,8 @@
 #define BRIGHTNESS  40
 CRGB leds[NUM_LEDS];
 
-int cIntensity = 50;
+int cIntensity = 250;
+CRGB cBlack = CRGB(0, 0, 0);
 CRGB cWhite = CRGB(cIntensity, cIntensity, cIntensity);
 CRGB cGreen = CRGB(0, cIntensity, 0);
 CRGB cRed = CRGB(cIntensity, 0, 0);
@@ -31,6 +32,14 @@ long patternLength = 10000;
 
 void loop() {
   long patternEnd = 0;
+
+  // falling icicle
+  eraseTree();
+  patternEnd = millis() + patternLength;
+  while (millis() < patternEnd) {  
+    fallingIcicle();
+  }
+  
 
   // falling candycane stripes
   eraseTree();

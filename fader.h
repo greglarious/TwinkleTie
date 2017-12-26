@@ -119,3 +119,31 @@ void colorPulses() {
   delay(500);
 }
 
+void drawIcicle(int index, int minIdx, int maxIdx) {
+  CRGB curColor =  CRGB(210, 210, 255);
+  int curIndex = 0;
+  for (curIndex = index; curIndex < (index + 6); curIndex++) {
+    if ((curIndex >= minIdx) && (curIndex <= maxIdx)) {
+      leds[curIndex] = curColor;
+    }
+    int dec = 50;
+    if (curColor.r >= dec) curColor.r -= dec;
+    else curColor.r = 0;    
+    if (curColor.g >= dec) curColor.g -= dec;
+    else curColor.g = 0;    
+    if (curColor.b >= dec) curColor.b -= dec;
+    else curColor.b = 0;    
+  }
+  if ((curIndex >= minIdx) && (curIndex <= maxIdx)) {
+    leds[curIndex] = cBlack;
+  }
+  FastLED.show();
+}
+
+void fallingIcicle() {
+  for (int index=14; index >= -4; index--) { 
+    drawIcicle(index, 0, 14);
+    drawIcicle(index+15, 15, 29);
+    delay(80);
+  }
+}
