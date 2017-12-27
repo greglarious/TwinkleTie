@@ -3,7 +3,8 @@ Arduino code for runnng an RGB LED light show on a holiday necktie.
 TL/DR: Rudolph with your tie so bright, turn that thing down before you harm someone's retina.
 
 ## Demonstration
-https://youtu.be/MoQlWXUC1UQ
+[![Demonstration Video](https://i.ytimg.com/vi/MoQlWXUC1UQ/0.jpg)](https://youtu.be/MoQlWXUC1UQ)
+
 
 ## Parts List:
 - Two 15 LED WS2811 strips
