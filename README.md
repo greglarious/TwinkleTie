@@ -8,7 +8,7 @@ https://youtu.be/MoQlWXUC1UQ
 ## Parts List:
 - Two 15 LED WS2811 strips
 - Arduino Mini (or equivalent) 
-- Small USB battery
+- Small USB battery. The video shows an 80g round battery but that is a bit lumpy to wear. There are 60g flat batteries that would look and feel much better.
 - Ridiculous necktie
 
 ## Notes
