@@ -1,7 +1,9 @@
-# Twinkle
-Tie
-This code is for runnng an RGB LED light show on a holiday necktie.
+# TwinkleTie
+Arduino code for runnng an RGB LED light show on a holiday necktie.
 TL/DR: Rudolph with your tie so bright, turn that thing down before you harm someone's retina.
+
+## Demonstration
+https://youtu.be/MoQlWXUC1UQ
 
 ## Parts List:
 - Two 15 LED WS2811 strips
