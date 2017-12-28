@@ -11,7 +11,7 @@ TL/DR: Rudolph with your tie so bright, turn that thing down before you harm som
 ## Parts List:
 - Two 15 LED [WS2811 strips](https://www.google.com/search?q=ws2812+led+strip)
 - [Arduino Mini 5v](https://www.google.com/search?q=arduino+mini+pro+5v) - or equivalent 5v logic controller 
-- Small USB battery. The video shows an 80g round battery but that is a bit lumpy to wear. There are 60g flat batteries that would look and feel much better.
+- [Slim USB battery](https://www.google.com/search?q=ultra-slim+usb+battery). The video shows an 80g round battery but that is a bit lumpy to wear. There are 60g flat batteries that would look and feel much better.
 - Ridiculous necktie
 
 ## Notes
