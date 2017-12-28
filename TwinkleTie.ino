@@ -22,8 +22,8 @@ CRGB colors[6] = { cRed,cRed,cRed, cWhite, cWhite, cWhite  };
 
 void setup() {
   Serial.begin(115200);
-  FastLED.addLeds<WS2811, 7, GRB>(leds, 0, 15);
-  FastLED.addLeds<WS2811, 8, GRB>(leds, 15, 15);
+  FastLED.addLeds<WS2811, 2, GRB>(leds, 0, 15);
+  FastLED.addLeds<WS2811, 3, GRB>(leds, 15, 15);
   FastLED.setBrightness(  BRIGHTNESS );
   eraseTree();  
 }
