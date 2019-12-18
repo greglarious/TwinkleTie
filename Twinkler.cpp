@@ -2,7 +2,7 @@
 #include "Twinkler.h"
 
 byte Twinkler::numTwinklers = 0;
-byte  Twinkler::usedPositions[10];
+byte  Twinkler::usedPositions[MAX_TWINKLERS];
 float Twinkler::maxVal;
 float Twinkler::minVal;
 float Twinkler::increment;

@@ -5,13 +5,12 @@ float TWINKLE_INCREMENT;
 int DELAY_BETWEEN_INCREMENTS;
 int NUM_TWINKLE;
 
-Twinkler twinklers[10];
+Twinkler twinklers[MAX_TWINKLERS];
 ColorPalette *palette;
 
-ColorPalette retro;
-ColorPalette classic;
-ColorPalette white;
-
+ColorPalette retro(cIntensity);
+ColorPalette classic(cIntensity);
+ColorPalette white(cIntensity);
 boolean isSetup = false;
 
 void setupTwinkler() {
@@ -43,7 +42,7 @@ void setClassicWhiteTwinkle() {
  MAX_DELAY_BETWEEN_TWINKLES = 100;
  TWINKLE_INCREMENT = 0.01;
  DELAY_BETWEEN_INCREMENTS = 1;
- NUM_TWINKLE = 10;
+ NUM_TWINKLE = MAX_TWINKLERS;
  palette = &white;
  setupTwinkler();
 }
@@ -54,7 +53,7 @@ void setRetroTwinkle() {
  MAX_DELAY_BETWEEN_TWINKLES = 100;
  TWINKLE_INCREMENT = 0.01;
  DELAY_BETWEEN_INCREMENTS = 1;
- NUM_TWINKLE = 10;
+ NUM_TWINKLE = MAX_TWINKLERS;
  palette = &retro;
  setupTwinkler();
 }
@@ -65,7 +64,7 @@ void setupRainbowTwinkle() {
  MAX_DELAY_BETWEEN_TWINKLES = 100;
  TWINKLE_INCREMENT = 0.01;
  DELAY_BETWEEN_INCREMENTS = 1;
- NUM_TWINKLE = 10;
+ NUM_TWINKLE = MAX_TWINKLERS;
  palette = &classic;
  setupTwinkler();
 }
@@ -83,4 +82,3 @@ void loopTwinkler()
   FastLED.show();  
   delay(DELAY_BETWEEN_INCREMENTS);  
 }
-

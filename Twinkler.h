@@ -1,7 +1,9 @@
 #include "ColorPalette.h"
 
+#define MAX_TWINKLERS 50
+
 class Twinkler {
-  static byte usedPositions[10];
+  static byte usedPositions[];
   static byte numTwinklers;
   static float maxVal;
   static float minVal;
