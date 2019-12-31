@@ -1,6 +1,3 @@
-const CRGB circle_colors[cane_size] = { cBlue,cBlue,cBlue,cBlue,cBlue,  cWhite,cWhite,cWhite, cWhite, cWhite  };
-const CRGB cane_colors[cane_size] = { cRed,cRed,cRed,cRed,cRed,  cWhite,cWhite,cWhite, cWhite, cWhite  };
-
 void eraseTree() {
   for (int i=0; i < NUM_LEDS; i++) {
     leds[i].r = 0;
@@ -10,12 +7,7 @@ void eraseTree() {
   FastLED.show();
 }
 
-bool fadeTo(byte index, CRGB target, byte increment) {
-//  Serial.print("fade to index:");
-// Serial.println(index);
-//  leds[index] = target;
-//  return true;
-  
+bool fadeTo(byte index, CRGB target, byte increment) { 
   bool rval= true;
   if (leds[index].r < target.r - increment) {
       leds[index].r+= increment;
@@ -96,46 +88,77 @@ void colorWipeDown(CRGB c, byte increment, int pause) {
   }
 }
 
-void circleCane() {
-  int increment = 15;
-  for (int offset=0; offset < cane_size; offset++) {
-    bool done = false;
-    while (!done) {
-      done = true;
+const int cane_size = 10;
+const int cane_delay=5;
+const float cane_reduce = 0.5;
+int cane_offset=0;
+long next_cane_fade=0;
+int cane_increment = 10;
+bool done_cane_fade = false;
+
+
+void doCircleCane() {
+  // if it is time to animate the candy cane
+  if (millis() >= next_cane_fade) {
+    CRGB caneBlue = CRGB(0, 0, cIntensity * cane_reduce);
+    CRGB caneWhite = CRGB(cIntensity * cane_reduce, cIntensity * cane_reduce, cIntensity * cane_reduce);
+    CRGB cane_colors[cane_size] = { caneBlue,caneBlue,caneBlue,caneBlue,caneBlue,  caneWhite,caneWhite,caneWhite, caneWhite, caneWhite  };
+    if (!done_cane_fade) {
+      done_cane_fade = true;
       for(byte right_idx=bottom_right; right_idx < top_right; right_idx++) {
         int left_idx = top_left + right_idx;
-        byte cIndex = (right_idx + offset) % cane_size;
-        CRGB newColor = circle_colors[cIndex];
-        if (!fadeTo(right_idx, newColor, increment)) {
-          done = false;
+        byte cIndex = (right_idx + cane_offset) % cane_size;
+        CRGB newColor = cane_colors[cIndex];
+        //if any color is not done fading, keep fading
+        if (!fadeTo(right_idx, newColor, cane_increment)) {
+          done_cane_fade = false;
         }
-        fadeTo(left_idx, newColor, increment);
+        fadeTo(left_idx, newColor, cane_increment);
       }
       FastLED.show();
-      delay(1);
-    }
-  }
+    } else {
+      // move cane down or reset to top
+      if (cane_offset < cane_size) {
+        cane_offset++;
+      } else {
+        cane_offset = 0;
+      }
+      done_cane_fade = false;
+    } // done fading
+    next_cane_fade = millis() + cane_delay;
+  } // time to fade
 }
 
-void candyCane() {
-  int increment = 10;
-  for (int offset=0; offset < cane_size; offset++) {
-    bool done = false;
-    while (!done) {
-      done = true;
+void doCandyCane() {
+  // if it is time to animate the candy cane
+  if (millis() >= next_cane_fade) {
+    CRGB caneRed = CRGB(cIntensity * cane_reduce, 0, 0);
+    CRGB caneWhite = CRGB(cIntensity * cane_reduce, cIntensity * cane_reduce, cIntensity * cane_reduce);
+    CRGB cane_colors[cane_size] = { caneRed,caneRed,caneRed,caneRed,caneRed,  caneWhite,caneWhite,caneWhite, caneWhite, caneWhite  };
+    if (!done_cane_fade) {
+      done_cane_fade = true;
       for(byte right_idx=bottom_right; right_idx < top_right; right_idx++) {
         int left_idx = bottom_left - right_idx;
-        byte cIndex = (right_idx + offset) % cane_size;
+        byte cIndex = (right_idx + cane_offset) % cane_size;
         CRGB newColor = cane_colors[cIndex];
-        if (!fadeTo(right_idx, newColor, increment)) {
-          done = false;
+        //if any color is not done fading, keep fading
+        if (!fadeTo(right_idx, newColor, cane_increment)) {
+          done_cane_fade = false;
         }
-        fadeTo(left_idx, newColor, increment);
+        fadeTo(left_idx, newColor, cane_increment);
       }
       FastLED.show();
-      delay(5);
-    }
-  }
+    } else {
+      // move cane down or reset to top
+      if (cane_offset < cane_size) {
+        cane_offset++;
+      } else {
+        cane_offset = 0;
+      }
+      done_cane_fade = false;
+    } // done fading
+    next_cane_fade = millis() + cane_delay;
+  } // time to fade
 }
 
 void colorWipes() {

@@ -1,10 +1,10 @@
 #define icicle_size 10
 #define icicle_speed 40
-#define icicle_dec (iIntensity / (icicle_length-1))
-const CRGB icicle_color = CRGB(iIntensity-45, iIntensity-45, iIntensity);
+#define icicle_dec (cIntensity / (icicle_length-1))
+#define icicle_color_offset 45
 
 void drawIcicle(bool up,int icicle_length, int start, int minIdx, int maxIdx) {
-  CRGB curColor = icicle_color;
+  CRGB curColor = CRGB(cIntensity-icicle_color_offset, cIntensity-icicle_color_offset, cIntensity);
   int curIndex = 0;
   int increment = 1;
   if (!up) increment = -1;
@@ -26,10 +26,18 @@ void drawIcicle(bool up,int icicle_length, int start, int minIdx, int maxIdx) {
   FastLED.show();
 }
 
-void fallingIcicle() {
-  for (int index=top_right; index >= -icicle_size; index--) { 
-    drawIcicle(true,  icicle_size, index, bottom_right, top_right);
-    drawIcicle(false, icicle_size, top_left + (top_right-index), top_left, bottom_left);
-    delay(icicle_speed);
+int icicle_move = 0;
+int icicle_pos = top_right;
+
+void doIcicle() {
+  if (millis() > icicle_move) {
+    icicle_move += icicle_speed;
+    if (icicle_pos >= -icicle_size) {
+      icicle_pos--;
+      drawIcicle(true,  icicle_size, icicle_pos, bottom_right, top_right);
+      drawIcicle(false, icicle_size, top_left + (top_right-icicle_pos), top_left, bottom_left);
+    } else {
+      icicle_pos = top_right;
+    }
   }
 }
