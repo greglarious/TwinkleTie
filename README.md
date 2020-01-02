@@ -1,5 +1,5 @@
 # TwinkleTie
-Arduino code for runnng an RGB LED light show on a holiday necktie controlled via bluetooth.
+Arduino code for runnng an RGB LED light show on a holiday necktie remote controlled via bluetooth.
 TL/DR: Rudolph with your tie so bright, turn that thing down before you harm someone's retina.
 
 ## Demonstration
