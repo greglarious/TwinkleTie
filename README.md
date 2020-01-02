@@ -3,9 +3,11 @@ Arduino code for runnng an RGB LED light show on a holiday necktie controlled vi
 TL/DR: Rudolph with your tie so bright, turn that thing down before you harm someone's retina.
 
 ## Demonstration
+This demo is out of date, new demo with bluetooth coming soon.
 [![Demonstration Video](https://i.ytimg.com/vi/MoQlWXUC1UQ/0.jpg)](https://youtu.be/MoQlWXUC1UQ)
 
 ## Schematic
+This schematic is out of date from an older version that used 2 strips. The latest iteration uses just 1.
 <img src="https://github.com/greglarious/TwinkleTie/blob/master/TwinkleTieSchematic.png?raw=true" width="500" height="500" />
 
 ## Parts List:
@@ -26,5 +28,9 @@ TL/DR: Rudolph with your tie so bright, turn that thing down before you harm som
   - These LEDs technically require both 5V logic to control them and 5V power signal to illuminate
   - A board with 5V logic levels is a sure bet when driving WS2811 and WS2812 LEDs but in recent years I have had very good results with 3V controllers. 
   - In this project I am using a 3V controller and driving the illumination with only 3.7V. Having the battery voltage just 0.7v away from the driving voltage actually makes it more reliable and there is no noticeable sacrifice in brightness for driving it with 1.3V less than usual 
-  
-- When soldering to RGB LED strips, the joint can be fragile so it is very helpful to reinforce the solder locations with epoxy to provide durability
+- Construction tips
+  - The overall durability of a necktie with an LED strip stuck onto it is fairly low. I leave the knot permanently tied and loosen it just enough to pull over my head
+  - Use something like a zip tie to anchor the LED control wires firmly to the controller board so the solder joints are not stressed and broken from normal use of the tie
+  - Consider IP65 as more likely to survive stains!
+  - If the weight of the LED strips caues the tie to lose its shape, you can insert a semi-rigid material such as leather inside of the tie to help retain a nice shape
+  - If you have to solder directly onto the LED strip, the joint can be fragile so it is very helpful to reinforce the solder locations with epoxy to provide durability
