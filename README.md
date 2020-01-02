@@ -23,7 +23,7 @@ This schematic is out of date from an older version that used 2 strips. The late
 - LED strip waterproof rating and sticky tape backing:
   - IP30 rating means not waterproof. these usually come with a peel and stick backing
   - IP65 rating means waterproof to low pressure spray. These strips usually have a slightly rigid, curved, crystal clear silicone coating on one side and a peel and stick backing
-  - IP67 rating means highly waterproof. These strips are usually inside a flexible rectangular silicone case that is not perfectly clear. I have never seen this form of LED strip with a peel and stick backing. Mounting is usually done with plastic brackets.
+  - IP67 rating means highly waterproof. These strips are usually inside a flexible rectangular silicone case that is not perfectly clear. This form of LED strip does not offer a peel and stick backing. Mounting is usually done with plastic brackets. I have not yet tried to build a tie with an IP67 strip and not sure how mounting would work. Maybe sew it to the tie?
 - Microcontrollers are usually available in 5V and 3V formats:
   - These LEDs technically require both 5V logic to control them and 5V power signal to illuminate
   - A board with 5V logic levels is a sure bet when driving WS2811 and WS2812 LEDs but in recent years I have had very good results with 3V controllers. 
