@@ -11,7 +11,7 @@ This schematic is out of date from an older version that used 2 strips. The late
 <img src="https://github.com/greglarious/TwinkleTie/blob/master/TwinkleTieSchematic.png?raw=true" width="500" height="500" />
 
 ## Parts List:
-- One LED strip. 1m, 144LEDS. See notes below on differences and choosing.
+- One LED strip. 1m, 144LEDS. See notes below on differences and choosing. The video demo shows a generic brand strip without waterproofing.
   - [Adafruit NeoPixel 144/m strip - no adhesive](https://www.adafruit.com/product/1506)
   - [Adafruit NeoPixel 144/m mini skinny strip - no adhesive](https://www.adafruit.com/product/2970)
   - [generic brand WS2812 144/m strip - with adhesive](https://www.google.com/search?q=BTF-LIGHTING+WS2812B+144+LEDs) 
