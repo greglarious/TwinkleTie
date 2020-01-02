@@ -2,119 +2,87 @@
 
 #include <FastLED.h>
 
-#include "Twinkler.h" 
+#include "bluetooth.h"
 
-const int cIntensity = 45;
-const int iIntensity = 110;
-const int NUM_LEDS = 144;
-const int BRIGHTNESS = 100;
-const int cane_size = 10;
-const int patternLength = 6000;
+class TwinkleTie {
+public:
+  static const int NUM_LEDS = 144;
+  static const int BRIGHTNESS = 255;
+  
+  static const uint16_t top_right = NUM_LEDS / 2 - 1;
+  static const uint16_t bottom_right = 0;
+  static const uint16_t top_left = NUM_LEDS / 2;
+  static const uint16_t bottom_left = NUM_LEDS - 1;
+  
+  CRGB leds[NUM_LEDS];
 
-const uint16_t top_right = NUM_LEDS / 2 - 1;
-const uint16_t bottom_right = 0;
-const uint16_t top_left = NUM_LEDS / 2;
-const uint16_t bottom_left = NUM_LEDS - 1;
+  void setupTie() {
+    FastLED.addLeds<WS2811, A1, GRB>(leds, 0, NUM_LEDS);
+    FastLED.setBrightness(  BRIGHTNESS );
+  }
+};
 
-CRGB leds[NUM_LEDS];
+#include "PatternRunner.h"
 
-const CRGB cBlack = CRGB(0, 0, 0);
-const CRGB cWarmWhite = CRGB(cIntensity, cIntensity / 1.2, cIntensity / 3.4);
-const CRGB cWhite = CRGB(cIntensity, cIntensity, cIntensity);
-const CRGB cGreen = CRGB(0, cIntensity, 0);
-const CRGB cRed = CRGB(cIntensity, 0, 0);
-const CRGB cBlue = CRGB(0, 0, cIntensity);
-
-#include "icicle.h"
-#include "fader.h"
-#include "TwinklePatterns.h"
+TwinkleTie tie;
+ColorPalette palette;
+PatternRunner patterns(&tie, &palette);
 
 void setup() {
   Serial.begin(115200);
-  FastLED.addLeds<WS2811, A3, GRB>(leds, 0, NUM_LEDS);
-  FastLED.setBrightness(  BRIGHTNESS );
-  eraseTree();  
+  bluetoothSetup();
+  tie.setupTie();
 }
 
-void loop() {
-  long patternEnd = 0;
+void loop(void)
+{
+  patterns.runLoop();
 
-  // circling blue white stripes
-  eraseTree();
-  patternEnd = millis() + patternLength;
-  while (millis() < patternEnd) {  
-    circleCane();
+  uint8_t len = readPacket(&ble, BLE_READPACKET_TIMEOUT);
+  if (len == 0) return;
+ 
+  // Buttons
+  if (packetbuffer[1] == 'B') {
+    uint8_t buttnum = packetbuffer[2] - '0';
+    boolean pressed = packetbuffer[3] - '0';
+    if (pressed) {
+      switch (buttnum) {
+        case 1:
+          patterns.setMode(MODE_OFF);
+          break;
+        case 2:
+          patterns.setMode(MODE_SOLID);
+          break;
+        case 3:
+          patterns.setMode(MODE_ROLLING);
+          break;
+        case 4:
+          break;
+        case 5:
+          palette.increaseBrightness();
+          break;
+        case 6:
+          palette.decreaseBrightness();
+          break;
+        case 7:
+          patterns.prevPattern();
+          break;
+        case 8:
+          patterns.nextPattern();
+          break;
+      }
+    }
   }
-  
-  // falling icicle
-  eraseTree();
-  patternEnd = millis() + patternLength;
-  while (millis() < patternEnd) {  
-    fallingIcicle();
-  }
-
-  // 
-  // sparkler
-  //
-  const int numSparkle = 30;
-  int curIndex[numSparkle];
-  eraseTree();
-  patternEnd = millis() + patternLength;
-  while (millis() < patternEnd) {  
-    for (int i=0; i<numSparkle; i++) curIndex[i] = random(NUM_LEDS);
-    for (int i=0; i<numSparkle; i++) leds[curIndex[i]] = cWarmWhite;
-    FastLED.show(); 
-    for (int i=0; i<numSparkle; i++) leds[curIndex[i]] = cBlack;
-    delay(40);
-  }
-  // falling candycane stripes
-  eraseTree();
-  patternEnd = millis() + patternLength;
-  while (millis() < patternEnd) {  
-    candyCane();
-  }
-  
-  //
-  // retro color twinkle
-  //  
-  eraseTree();
-  setRetroTwinkle();
-  patternEnd = millis() + patternLength;
-  while (millis() < patternEnd) {  
-    loopTwinkler(); 
-  }  
-
-  // pulse red and green
-  patternEnd = millis() + patternLength;
-  eraseTree();
-  while (millis() < patternEnd) {  
-    colorPulses();
-  }
-  
-  //
-  // christmas color twinkle 
-  //  
-  eraseTree();
-  setupRainbowTwinkle();
-  patternEnd = millis() + patternLength;
-  while (millis() < patternEnd) {  
-    loopTwinkler(); 
-  }  
-
-  // red green up down wipes
-  eraseTree();
-  patternEnd = millis() + patternLength;
-  while (millis() < patternEnd) {  
-    colorWipes();
-  }
-  
-  // 
-  // classic white twinkle
-  //
-  eraseTree();
-  setClassicWhiteTwinkle();
-  patternEnd = millis() + patternLength;
-  while (millis() < patternEnd) {  
-    loopTwinkler(); 
+  // Color picker
+  else if (packetbuffer[1] == 'C') {
+    uint8_t red = packetbuffer[2];
+    uint8_t green = packetbuffer[3];
+    uint8_t blue = packetbuffer[4];
+    for (int i=0; i < tie.NUM_LEDS; i++) {
+      tie.leds[i].r = red;
+      tie.leds[i].g = green;
+      tie.leds[i].b = blue;
+    }
+    FastLED.show();
   }
 }
