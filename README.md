@@ -1,5 +1,5 @@
 # TwinkleTie
-Arduino code for runnng an RGB LED light show on a holiday necktie.
+Arduino code for runnng an RGB LED light show on a holiday necktie controlled via bluetooth.
 TL/DR: Rudolph with your tie so bright, turn that thing down before you harm someone's retina.
 
 ## Demonstration
@@ -9,13 +9,12 @@ TL/DR: Rudolph with your tie so bright, turn that thing down before you harm som
 <img src="https://github.com/greglarious/TwinkleTie/blob/master/TwinkleTieSchematic.png?raw=true" width="500" height="500" />
 
 ## Parts List:
-- Two 15 LED [WS2811 strips](https://www.google.com/search?q=ws2812+led+strip) - this can be one longer strip cut in half at an appropriate location on the strip where it exposes solder points and is designed to be cut.
-- [Arduino Mini 5v](https://www.google.com/search?q=arduino+mini+pro+5v) - or equivalent 5v logic controller 
-- [Slim USB battery](https://www.google.com/search?q=ultra-slim+usb+battery). The video shows an 80g round battery but that is a bit lumpy to wear. There are 60g flat batteries that would look and feel much better.
+- One WS2812B LED strip. 1m, 144LEDS [WS2812 strips](https://www.google.com/search?q=BTF-LIGHTING+WS2812B+144+LEDs) 
+- [Adafruit Feather M0 Bluefruit LE](https://www.adafruit.com/product/2995)
+- [2500mah 3.7v lion battery](https://www.adafruit.com/product/328)
 - Ridiculous necktie
-- Epoxy
 
 ## Notes
-- Controllers with 5V logic levels are safest unless you have tested your LED strips with 3V
-- Even if your 3V controller works with 1 LED strip, it might not work with 2.  Chain the strips together and use 1 data pin to fix this.
+- Controllers with 5V logic levels are a sure bet when driving WS2811 and WS2812 LEDs but
+- In recent years I have had very good results with 3V controllers. In this project we are using a 3V controller and also driving the strip itself with only 3.7V. Having the battery voltage just 0.7v away from the driving voltage makes it more reliable and there is no noticeable sacrifice in brightness for driving it with 1.3V less than usual 
 - When soldering to RGB LED strips, the joint can be fragile so it is very helpful to reinforce the solder locations with epoxy to provide durability
