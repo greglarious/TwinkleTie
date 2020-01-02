@@ -85,7 +85,6 @@ void Twinkler::doTwinkle() {
 CRGB Twinkler::getValue() {
   CRGB rval;
   
-
   rval.r = (float)color.r * value;
   rval.g = (float)color.g * value;
   rval.b = (float)color.b * value;
