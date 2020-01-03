@@ -35,11 +35,13 @@ This schematic is out of date from an older version that used 2 strips. The late
   - IP30 rating means not waterproof. these usually come with a peel and stick backing
   - IP65 rating means waterproof to low pressure spray. These strips usually have a slightly rigid, curved, crystal clear silicone coating on one side and a peel and stick backing
   - IP67 rating means highly waterproof. These strips are usually inside a flexible rectangular silicone case that is not perfectly clear. This form of LED strip does not offer a peel and stick backing. Mounting is usually done with plastic brackets. I have not yet tried to build a tie with an IP67 strip and not sure how mounting would work. Maybe sew it to the tie?
-- Microcontroller logic voltage:
-  - Usually available in 5V and 3V formats:
-  - These LEDs technically require both 5V logic to control them and 5V power signal to illuminate
-  - A board with 5V logic levels is a sure bet when driving WS2811 and WS2812 LEDs but in recent years I have had very good results with 3V controllers. 
-  - In this project I am using a 3V controller and driving the illumination with only 3.7V. Having the battery voltage just 0.7v away from the driving voltage actually makes it more reliable and there is no noticeable sacrifice in brightness for driving it with 1.3V less than usual  
+- Microcontroller logic voltage vs LED logic voltage vs LED illumination voltage:
+  - Logic voltage on microcontrollers is available in 5V and 3V formats
+  - Logic voltage on addressable LEDs (WS2811 and WS2812) is 5v
+  - Illumination voltage on addressable LEDS is 5V for this project but 12V is also available
+  - A controller board with 5V logic levels is a sure bet when driving these LEDs but in recent years I have had very good results with 3V controllers directly connected to short LED strips 
+  - In this project I am using a 3V controller and driving the illumination with only 3.7V with great results
+  - Having the illumination voltage just 0.7v above the driving voltage of 3V actually makes it more reliable and there is no noticeable sacrifice in brightness from using a driving that is 1.3V less than usual  
 - Construction tips:
   - The overall durability of a necktie with an LED strip stuck onto it is fairly low. I leave the knot permanently tied and loosen it just enough to pull over my head
   - Use something like a zip tie to anchor the LED control wires firmly to the controller board so the solder joints are not stressed and broken from normal use of the tie
