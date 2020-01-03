@@ -12,9 +12,9 @@ This schematic is out of date from an older version that used 2 strips. The late
 
 ## Parts List:
 - One LED strip. 1m, 144LEDS. See notes below on differences and choosing. The video demo shows a generic brand strip without waterproofing.
+  - [generic brand WS2812 144/m strip - with adhesive](https://www.google.com/search?q=BTF-LIGHTING+WS2812B+144+LEDs) 
   - [Adafruit NeoPixel 144/m strip - no adhesive](https://www.adafruit.com/product/1506)
   - [Adafruit NeoPixel 144/m mini skinny strip - no adhesive](https://www.adafruit.com/product/2970)
-  - [generic brand WS2812 144/m strip - with adhesive](https://www.google.com/search?q=BTF-LIGHTING+WS2812B+144+LEDs) 
 - [Adafruit Feather M0 Bluefruit LE](https://www.adafruit.com/product/2995)
 - [2500mah 3.7v lion battery](https://www.adafruit.com/product/328)
 - Ridiculous necktie
