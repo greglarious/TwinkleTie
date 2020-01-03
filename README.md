@@ -4,7 +4,7 @@ TL/DR: Rudolph with your tie so bright, turn that thing down before you harm som
 
 ## Demonstration
 This demo is out of date, new demo with bluetooth coming soon.
-[![Demonstration Video](https://youtu.be/xrCQoonOee4/0.jpg)](https://youtu.be/xrCQoonOee4)
+[![Demonstration Video](https://img.youtube.com/vi/xrCQoonOee4/maxresdefault.jpg)](https://www.youtube.com/watch?v=xrCQoonOee4)
 
 ## Schematic
 This schematic is out of date from an older version that used 2 strips. The latest iteration uses just 1.
