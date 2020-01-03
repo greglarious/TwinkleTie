@@ -17,7 +17,7 @@ This schematic is out of date from an older version that used 2 strips. The late
   - [Adafruit NeoPixel 144/m mini skinny strip - no adhesive](https://www.adafruit.com/product/2970)
 - [Adafruit Feather M0 Bluefruit LE](https://www.adafruit.com/product/2995)
 - [2500mah 3.7v lion battery](https://www.adafruit.com/product/328)
-- Ridiculous necktie
+- 1 Ridiculous necktie, bowtie, suspenders, hat ...
 
 ## Notes
 - LED strip waterproof rating and sticky tape backing:
