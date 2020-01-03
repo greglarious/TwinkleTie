@@ -1,27 +1,21 @@
-class Sparkler {
+//
+// pattern with sparkles appearing in random locations
+//
+class Sparkler: public PatternBase {
   const static int num_sparkles = 30;
-  const static int sparkle_millis = 40;
-
   int sparkle_positions[num_sparkles];
-  long next_sparkle_time = 0;
-
-  CRGB* leds;
-  int num_leds;
-  ColorPalette* default_palette;
-
 public:
-
-  Sparkler(CRGB* leds, int num_leds, ColorPalette* default_palette): leds(leds), num_leds(num_leds), default_palette(default_palette) {
-    
+  Sparkler(ShapedLED* shape, ColorPalette* default_palette): PatternBase(shape, default_palette) {
+    pattern_run_delay = 40;
   }
   
   void run() {
-    if (millis() > next_sparkle_time) {
-      next_sparkle_time = millis() + sparkle_millis;
+    if (timeToRun()) {
+      setNextRun();
       for (int i=0; i< num_sparkles; i++) {
-        leds[sparkle_positions[i]] = default_palette->cBlack;
-        sparkle_positions[i] = random(num_leds);
-        leds[sparkle_positions[i]] = default_palette->cWarmWhite;
+        shape->leds[sparkle_positions[i]] = default_palette->cBlack;
+        sparkle_positions[i] = random(shape->num_leds);
+        shape->leds[sparkle_positions[i]] = default_palette->cWarmWhite;
       }
       FastLED.show(); 
     }

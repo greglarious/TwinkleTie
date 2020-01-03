@@ -5,6 +5,10 @@
 #include "Adafruit_BluefruitLE_SPI.h"
 #include "Adafruit_BluefruitLE_UART.h"
 
+//
+// simplified bluetooth helpers inspired by the Adafruit example and reduced to minimum needed items
+//
+
 #define BUFSIZE                        128   // Size of the read buffer for incoming data
 #define VERBOSE_MODE                   true  // If set to 'true' enables debug output
 #define BLE_READPACKET_TIMEOUT         3   // Timeout in ms waiting to read a response
@@ -29,27 +33,27 @@
 #define READ_BUFSIZE                    (20)
 
 Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
-uint8_t packetbuffer[READ_BUFSIZE+1];
+uint8_t packet_buffer[READ_BUFSIZE+1];
 
-uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout) 
-{
+uint8_t readBluetoothPacket() {
+  uint16_t timeout = BLE_READPACKET_TIMEOUT;
   uint16_t origtimeout = timeout, replyidx = 0;
 
-  memset(packetbuffer, 0, READ_BUFSIZE);
+  memset(packet_buffer, 0, READ_BUFSIZE);
 
   while (timeout--) {
     if (replyidx >= 20) break;
-    if ((packetbuffer[1] == 'B') && (replyidx == PACKET_BUTTON_LEN))
+    if ((packet_buffer[1] == 'B') && (replyidx == PACKET_BUTTON_LEN))
       break;
-    if ((packetbuffer[1] == 'C') && (replyidx == PACKET_COLOR_LEN))
+    if ((packet_buffer[1] == 'C') && (replyidx == PACKET_COLOR_LEN))
       break;
 
-    while (ble->available()) {
-      char c =  ble->read();
+    while (ble.available()) {
+      char c =  ble.read();
       if (c == '!') {
         replyidx = 0;
       }
-      packetbuffer[replyidx] = c;
+      packet_buffer[replyidx] = c;
       replyidx++;
       timeout = origtimeout;
     }
@@ -58,19 +62,19 @@ uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout)
     delay(1);
   }
 
-  packetbuffer[replyidx] = 0;  // null term
+  packet_buffer[replyidx] = 0;  // null term
 
   if (!replyidx)  // no data or timeout 
     return 0;
-  if (packetbuffer[0] != '!')  // doesn't start with '!' packet beginning
+  if (packet_buffer[0] != '!')  // doesn't start with '!' packet beginning
     return 0;
   
   // check checksum!
   uint8_t xsum = 0;
-  uint8_t checksum = packetbuffer[replyidx-1];
+  uint8_t checksum = packet_buffer[replyidx-1];
   
   for (uint8_t i=0; i<replyidx-1; i++) {
-    xsum += packetbuffer[i];
+    xsum += packet_buffer[i];
   }
   xsum = ~xsum;
 
@@ -84,10 +88,8 @@ uint8_t readPacket(Adafruit_BLE *ble, uint16_t timeout)
   // checksum passed!
   return replyidx;
 }
-float parsefloat(uint8_t *buffer);
 
-void bluetoothSetup(void)
-{
+void bluetoothSetup(void) {
   ble.begin(false);
   ble.factoryReset();
   ble.echo(false);
