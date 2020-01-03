@@ -1,13 +1,13 @@
-// patterns not related to tie shape
-#include "Twinkler.h" 
-#include "TwinklePatterns.h"
+#include <FastLED.h>
+#include "FadeUtils.h"
+#include "ShapedLED.h"
+#include "PatternBase.h"
+#include "Twinkler.h"
+#include "TwinklerGroup.h" 
 #include "Sparkler.h"
-#include "ColorPulser.h"
-
-// patterns that depend on the tie shape
+#include "ColorPulseWipe.h"
 #include "Icicle.h"
 #include "CandyCane.h"
-#include "ColorWipe.h"
 
 #define MODE_OFF 0
 #define MODE_SOLID 1
@@ -23,85 +23,75 @@
 #define RAINBOW_TWINKLE_PATTERN 7
 #define WHITE_TWINKLE_PATTERN 8
 #define MAX_PATTERN_IDX 8
-    
+
+//
+// controller to work with a variety of patterns and run/adjust them
+//
 class PatternRunner {
-  const int patternLength = 6000;
+  const int pattern_display_time = 6000;
 
   long pattern_end_time = 0;
   int current_pattern_mode = MODE_OFF;
   int current_pattern_idx = SPARKLE_PATTERN;
-
-  ColorPalette* palette;
+  PatternBase* cur_pattern = NULL;
+  
+  ColorPalette default_palette;
+  ColorPalette retro;
+  ColorPalette classic;
+  ColorPalette white;
+  
   Sparkler sparkle;
   Icicle icicle;
   CandyCane cane;
-  ColorWipe wiper1;
-  ColorWipe wiper2;
+  ColorWipe wiper;
   ColorPulser pulser;
+  TwinklerGroup twinkler_group;
 
-  TwinkleTie* tie;
+  ShapedLED* shape;
   
   void turnOff() {
-    for (int i=0; i < tie->NUM_LEDS; i++) {
-      tie->leds[i].r = 0;
-      tie->leds[i].g = 0;
-      tie->leds[i].b = 0;
+    for (int i=0; i < shape->num_leds; i++) {
+      shape->leds[i].r = 0;
+      shape->leds[i].g = 0;
+      shape->leds[i].b = 0;
     }
     FastLED.show();
   }
   
-  void upDownWipe() {
-    int pause = 2;
-    int inc = 30;
-    if (!wiper1.isComplete()) {
-      wiper1.run(palette->cRed, inc, pause);
-    } else if (!wiper2.isComplete()) {
-        wiper2.run(palette->cGreen, inc, pause);
-    } else {
-      wiper1.reset();
-      wiper2.reset();
-    }
+  void runCurrentPattern() {
+    if (cur_pattern != NULL)
+      cur_pattern->run();
   }
   
-  void runCurrentPattern() {
-    switch (current_pattern_idx) {
-      case SPARKLE_PATTERN:
-        sparkle.run();
-        break;
-      case ICICLE_PATTERN:
-        icicle.run();
-        break;
-      case CANDY_CANE_PATTERN:
-        cane.run(false);
-        break;
-      case CIRCLE_CANE_PATTERN:
-        cane.run(true);
-        break; 
-      case UPDOWN_WIPE_PATTERN:
-        upDownWipe();
-        break;
-      case PULSE_PATTERN:
-        pulser.run();
-        break;
-      case RETRO_TWINKLE_PATTERN:
-      case RAINBOW_TWINKLE_PATTERN:
-      case WHITE_TWINKLE_PATTERN:
-        loopTwinkler(tie->leds);
-        break;
-    }
-  }
 public: 
-  PatternRunner(TwinkleTie* tie, ColorPalette* palette): 
-    tie(tie),
-    palette(palette), 
-    sparkle(tie->leds, tie->NUM_LEDS, palette),
-    pulser(tie->leds, tie->NUM_LEDS, palette),
-    icicle(tie, palette),
-    cane(tie, palette), 
-    wiper1(tie, palette, true), 
-    wiper2(tie, palette, false) {
+  PatternRunner(ShapedLED* shape): 
+    shape(shape),
+    sparkle(shape, &default_palette),
+    pulser(shape, &default_palette),
+    icicle(shape, &default_palette),
+    cane(shape, &default_palette), 
+    wiper(shape, &default_palette), 
+    twinkler_group(shape, &default_palette) {
+      cur_pattern = &sparkle;
   }
 
+  void initPalettes() {
+    retro.clearPalette();
+    retro.addColor(CRGB::HotPink);
+    retro.addColor(CRGB::Turquoise);
+    retro.addColor(CRGB::DeepPink);
+    retro.addColor(CRGB::Turquoise);
+  
+    classic.clearPalette();
+    classic.addColor(CRGB::Green);
+    classic.addColor(CRGB::Blue);
+    classic.addColor(CRGB::Red);
+    classic.addColor(CRGB::Gold);
+  
+    white.clearPalette();
+    white.addColor(CRGB::AntiqueWhite);    
+  }
+  
   void runLoop() {
     switch (current_pattern_mode) {
       case MODE_OFF:
@@ -110,7 +100,7 @@ public:
       case MODE_ROLLING:
         if (millis() > pattern_end_time) {
           nextPattern();
-          pattern_end_time = millis() + patternLength;
+          pattern_end_time = millis() + pattern_display_time;
         }
         runCurrentPattern();
         break;
@@ -126,16 +116,39 @@ public:
       turnOff();
   }
 
-  void initTwinklers() {
+  void initPattern() {
     switch(current_pattern_idx) {
+      case SPARKLE_PATTERN:
+        cur_pattern = &sparkle;
+        break;
+      case ICICLE_PATTERN:
+        cur_pattern = &icicle;
+        break;
+      case CIRCLE_CANE_PATTERN:
+        cane.setDoCircle(true);
+        cur_pattern = &cane;
+        break;
+      case CANDY_CANE_PATTERN:
+        cane.setDoCircle(false);
+        cur_pattern = &cane;
+        break;
       case RETRO_TWINKLE_PATTERN:
-        setRetroTwinkle(tie->NUM_LEDS);
+        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.01, 100, &retro);
+        cur_pattern = &twinkler_group;
         break;
       case RAINBOW_TWINKLE_PATTERN:
-        setupRainbowTwinkle(tie->NUM_LEDS);
+        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.01, 100, &classic);
+        cur_pattern = &twinkler_group;
         break;
       case WHITE_TWINKLE_PATTERN:
-        setClassicWhiteTwinkle(tie->NUM_LEDS);
+        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.01, 100, &white);
+        cur_pattern = &twinkler_group;
+        break;
+      case UPDOWN_WIPE_PATTERN:
+        cur_pattern = &wiper;
+        break;
+      case PULSE_PATTERN:
+        cur_pattern = &pulser;
         break;
     }
   }
@@ -145,7 +158,7 @@ public:
     current_pattern_idx++;
     if (current_pattern_idx > MAX_PATTERN_IDX)
       current_pattern_idx = 0;
-    initTwinklers();  
+    initPattern();  
   }
   
   void prevPattern() {
@@ -153,6 +166,22 @@ public:
     current_pattern_idx--;
     if (current_pattern_idx < 0)
       current_pattern_idx = MAX_PATTERN_IDX;
-    initTwinklers();  
+    initPattern();  
+  }
+
+  void increaseBrightness() {
+    default_palette.increaseBrightness();
+    retro.increaseBrightness();
+    classic.increaseBrightness();
+    white.increaseBrightness();
+    initPalettes();
+  }
+
+  void decreaseBrightness() {
+    default_palette.decreaseBrightness();
+    retro.decreaseBrightness();
+    classic.decreaseBrightness();
+    white.decreaseBrightness();
+    initPalettes();
   }
 };

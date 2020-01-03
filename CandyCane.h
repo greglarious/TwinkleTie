@@ -1,52 +1,57 @@
-class CandyCane {
+//
+// pattern with alternating color stripes either falling or going in a circle
+//
+class CandyCane: public PatternBase {
   const int cane_size = 10;
-  const int cane_delay=5;
   const float cane_reduce = 0.5;
   
   int cane_offset=0;
   long next_cane_fade=0;
   int cane_increment = 10;
   bool done_cane_fade = false;
-
-  CRGB topColor;
-  CRGB bottomColor;
-
-  TwinkleTie* tie;
-  ColorPalette* default_palette;
+  bool doCircle = false;
+  
+  CRGB top_color;
+  CRGB bottom_color;
 
 public:
-  CandyCane(TwinkleTie* tie, ColorPalette* default_palette): tie(tie), default_palette(default_palette) {
+  CandyCane(ShapedLED* shape, ColorPalette* default_palette): PatternBase(shape, default_palette) {
+    pattern_run_delay = 5;
+  }
+
+  void setDoCircle(bool doCircle) {
+    this->doCircle = doCircle;
   }
   
-   void run(bool doCircle) {
+  void run() {
     // if it is time to animate the candy cane
-    if (millis() >= next_cane_fade) {
+    if (timeToRun()) {
       if (doCircle) {
-        topColor = CRGB(0, 0, default_palette->getIntensity() * cane_reduce);
-        bottomColor = CRGB(default_palette->getIntensity() * cane_reduce, default_palette->getIntensity() * cane_reduce, default_palette->getIntensity() * cane_reduce);
+        top_color = CRGB(0, 0, default_palette->getIntensity() * cane_reduce);
+        bottom_color = CRGB(default_palette->getIntensity() * cane_reduce, default_palette->getIntensity() * cane_reduce, default_palette->getIntensity() * cane_reduce);
       } else {
-        topColor = CRGB(default_palette->getIntensity() * cane_reduce, 0, 0);
-        bottomColor = CRGB(default_palette->getIntensity() * cane_reduce, default_palette->getIntensity() * cane_reduce, default_palette->getIntensity() * cane_reduce);
+        top_color = CRGB(default_palette->getIntensity() * cane_reduce, 0, 0);
+        bottom_color = CRGB(default_palette->getIntensity() * cane_reduce, default_palette->getIntensity() * cane_reduce, default_palette->getIntensity() * cane_reduce);
       }
       if (!done_cane_fade) {
         done_cane_fade = true;
-        for(byte right_idx=tie->bottom_right; right_idx < tie->top_right; right_idx++) {
+        for(byte right_idx=shape->bottom_right; right_idx < shape->top_right; right_idx++) {
           int left_idx;
           if (doCircle)
-            left_idx = tie->top_left + right_idx;
+            left_idx = shape->top_left + right_idx;
           else
-            left_idx = tie->bottom_left - right_idx;
+            left_idx = shape->bottom_left - right_idx;
           byte colorIndex = (right_idx + cane_offset) % cane_size;
           CRGB newColor;
           if (colorIndex < cane_size / 2)
-            newColor = topColor;
+            newColor = top_color;
           else 
-            newColor = bottomColor;
+            newColor = bottom_color;
           //if any color is not done fading, keep fading
-          if (!FadeUtils::fadeTo(tie->leds, right_idx, newColor, cane_increment)) {
+          if (!FadeUtils::fadeTo(shape->leds, right_idx, newColor, cane_increment)) {
             done_cane_fade = false;
           }
-          FadeUtils::fadeTo(tie->leds, left_idx, newColor, cane_increment);
+          FadeUtils::fadeTo(shape->leds, left_idx, newColor, cane_increment);
         }
         FastLED.show();
       } else {
@@ -58,7 +63,7 @@ public:
         }
         done_cane_fade = false;
       } // done fading
-      next_cane_fade = millis() + cane_delay;
+      setNextRun();
     } // time to fade
   }
 };
