@@ -8,6 +8,7 @@
 #include "ColorPulseWipe.h"
 #include "Icicle.h"
 #include "CandyCane.h"
+#include "StrangerLights.h"
 
 #define MODE_OFF 0
 #define MODE_SOLID 1
@@ -22,7 +23,8 @@
 #define RETRO_TWINKLE_PATTERN 6
 #define RAINBOW_TWINKLE_PATTERN 7
 #define WHITE_TWINKLE_PATTERN 8
-#define MAX_PATTERN_IDX 8
+#define STRANGE_PATTERN 9
+#define MAX_PATTERN_IDX 9
 
 //
 // controller to work with a variety of patterns and run/adjust them
@@ -46,6 +48,7 @@ class PatternRunner {
   ColorWipe wiper;
   ColorPulser pulser;
   TwinklerGroup twinkler_group;
+  StrangerLights strange;
 
   ShapedLED* shape;
   
@@ -71,8 +74,9 @@ public:
     icicle(shape, &default_palette),
     cane(shape, &default_palette), 
     wiper(shape, &default_palette), 
-    twinkler_group(shape, &default_palette) {
-      cur_pattern = &sparkle;
+    twinkler_group(shape, &default_palette),
+    strange(shape, &default_palette) {
+      initPattern();
   }
 
   void initPalettes() {
@@ -149,6 +153,9 @@ public:
         break;
       case PULSE_PATTERN:
         cur_pattern = &pulser;
+        break;
+      case STRANGE_PATTERN:
+        cur_pattern = &strange;
         break;
     }
   }

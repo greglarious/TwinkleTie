@@ -33,6 +33,11 @@ public:
     updateColors();
   }
 
+  static CRGB adjustColor(CRGB color, float intensity) {
+    CRGB rval = CRGB((float)color.r * intensity, (float)color.g * intensity, (float)color.b * intensity);
+    return rval;
+  }
+  
   int getIntensity() {
     return intensity;
   }
@@ -110,4 +115,77 @@ public:
     }
     return done;
   }
+};
+
+class Flicker {
+  bool blink_phase = false;
+  bool returning_to_start = false;
+  float cur_intensity = -1;
+
+  void updateIntensity( float begin_intensity, float end_intensity, float intensity_increment) {
+    if (end_intensity < begin_intensity) {
+      cur_intensity = cur_intensity - intensity_increment;
+    } else {
+      cur_intensity = cur_intensity + intensity_increment;      
+    } 
+    
+    if (cur_intensity > max(begin_intensity, end_intensity)) {
+      cur_intensity = max(begin_intensity, end_intensity);
+    }
+    if (cur_intensity < min(begin_intensity, end_intensity)) {
+      cur_intensity = min(begin_intensity, end_intensity);
+    }    
+  }
+
+public:
+  float getIntensity() {
+    return cur_intensity;
+  }
+  
+  //
+  // fade one LED up or down between two brightness levels while alternating with black to produce a flicker effect
+  //
+  bool flicker(int start_position, int end_position, CRGB leds[], float start_intensity, float target_intensity, float flick_down_intensity, bool do_return_to_start,
+    CRGB base_colors[], float intensity_increment, int num_leds) {    
+    float begin_intensity = start_intensity;
+    float end_intensity = target_intensity;
+    
+    if (cur_intensity < 0) {
+      // begin flicker
+      cur_intensity = begin_intensity;
+      returning_to_start = false;
+    }
+
+    // if returning, swap start and target
+    if (returning_to_start) {
+      begin_intensity = target_intensity;
+      end_intensity = start_intensity;
+    }
+
+    if (blink_phase) {
+      for (int index = start_position; index <= end_position; index++) {
+        leds[index] = ColorPalette::adjustColor(base_colors[index], flick_down_intensity);        
+      }        
+    } else {
+      for (int index = start_position; index <= end_position; index++) {
+        leds[index] = ColorPalette::adjustColor(base_colors[index], cur_intensity);        
+      }
+      updateIntensity(begin_intensity, end_intensity, intensity_increment);
+
+      if (cur_intensity == end_intensity) {
+        if (do_return_to_start && !returning_to_start) {
+          returning_to_start = true;
+        } else {
+          // done flickering
+          cur_intensity = -1;
+        }
+      }
+
+    }
+
+    // alternate to and from blinking phase
+    blink_phase = !blink_phase;
+
+    return cur_intensity == -1;
+  } 
 };

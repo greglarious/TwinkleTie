@@ -89,6 +89,7 @@ void bluetoothSetup(void) {
   bluefruit.begin(false);
   bluefruit.factoryReset();
   bluefruit.echo(false);
+  
   while (! bluefruit.isConnected()) {
     delay(500);
   }
