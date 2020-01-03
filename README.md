@@ -3,8 +3,8 @@ Arduino code for runnng an RGB LED light show on a holiday necktie remote contro
 TL/DR: Rudolph with your tie so bright, turn that thing down before you harm someone's retina.
 
 ## Demonstration
-This demo is out of date, new demo with bluetooth coming soon.
-[![Demonstration Video](https://img.youtube.com/vi/xrCQoonOee4/maxresdefault.jpg)](https://www.youtube.com/watch?v=xrCQoonOee4)
+Short demo of overall functionality and basic parts:
+[![Demonstration Video](https://img.youtube.com/vi/xrCQoonOee4/hqdefault.jpg)](https://www.youtube.com/watch?v=xrCQoonOee4)
 
 ## Schematic
 This schematic is out of date from an older version that used 2 strips. The latest iteration uses just 1.
