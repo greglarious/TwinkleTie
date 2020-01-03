@@ -18,7 +18,7 @@ class ColorPalette {
 public:
   static const int MIN_BRIGHTNESS = 25;
   static const int MAX_BRIGHTNESS = 210;
-  static const int DEFAULT_INTENSITY = 50;
+  static const int DEFAULT_INTENSITY = 45;
   
   CRGB cBlack;
   CRGB cWarmWhite;

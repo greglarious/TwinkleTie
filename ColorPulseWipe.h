@@ -42,7 +42,7 @@ class ColorWipe: public PatternBase {
   
 public:
   ColorWipe(ShapedLED* shape, ColorPalette* default_palette): PatternBase(shape, default_palette) {
-    pattern_run_delay = 2;
+    pattern_run_delay = 4;
     setTargetColor(default_palette->cRed);
     reset();
   }

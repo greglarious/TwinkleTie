@@ -133,15 +133,15 @@ public:
         cur_pattern = &cane;
         break;
       case RETRO_TWINKLE_PATTERN:
-        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.01, 100, &retro);
+        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.03, 50, &retro);
         cur_pattern = &twinkler_group;
         break;
       case RAINBOW_TWINKLE_PATTERN:
-        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.01, 100, &classic);
+        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.03, 50, &classic);
         cur_pattern = &twinkler_group;
         break;
       case WHITE_TWINKLE_PATTERN:
-        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.01, 100, &white);
+        twinkler_group.setup(TwinklerGroup::MAX_TWINKLERS, 0.0, 1.0, 0.03, 50, &white);
         cur_pattern = &twinkler_group;
         break;
       case UPDOWN_WIPE_PATTERN:

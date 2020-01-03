@@ -35,6 +35,7 @@ class Icicle: public PatternBase {
 
 public:
   Icicle(ShapedLED* shape, ColorPalette* default_palette): PatternBase(shape, default_palette) {
+    pattern_run_delay = 25;
   }
   
   void run() {
