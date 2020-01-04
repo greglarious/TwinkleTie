@@ -2,7 +2,7 @@
 // strange creepy pattern with a side of demigorgon
 //
 class StrangerLights: public PatternBase {
-  enum LightMode { Normal, Stutter, ShortCircuit, BrownOut };
+  enum LightMode { Normal, Stutter, ShortCircuit, BrownOut, Demogorgon };
 
   const int stutter_odds = 12;
   const int burnout_odds = 8;
@@ -16,6 +16,7 @@ class StrangerLights: public PatternBase {
   float stutter_amount = 0.2;
   int current_position = 0;
   LightMode current_mode = Normal;
+  int demo_phase = 0;
   
   void randomizeColor(int idx) {
     // sometimes skip an led leaving it dark to simulate a burned out bulb
@@ -30,19 +31,16 @@ class StrangerLights: public PatternBase {
     }
   }
 
-  void nextPosition() {
+  bool nextPosition() {
+    bool more_positions = true;
     // current led at max intensity, go to next led
     if (current_position < (shape->num_leds - 1)) {
       current_position++;
-      randomizeColor(current_position);     
+      randomizeColor(current_position);
     } else {
-      for (int index = 0; index < shape->num_leds; index++) {
-        shape->leds[index] = default_palette->cBlack;
-        color_bases[index] = default_palette->cBlack;
-      }
-      current_position = 0;
-      // add demigorgon effect here ??
-    }    
+      more_positions = false;
+    }
+    return more_positions;
   }
 
   void badThingsHappen() {
@@ -54,7 +52,42 @@ class StrangerLights: public PatternBase {
       current_mode = BrownOut;
     }
   }
-  
+
+  void doDemogorgon() {
+    bool all_fade_complete = true;
+
+    switch(demo_phase) {
+    case 2:
+    case 0:
+      for (int index = 0; index < shape->num_leds; index++) {
+        if (!FadeUtils::fadeTo(shape->leds, index, default_palette->cWhite, 1)) {
+          all_fade_complete = false;
+        }
+      }
+      break;
+    case 3:
+    case 1:
+      for (int index = 0; index < shape->num_leds; index++) {
+        if (!FadeUtils::fadeTo(shape->leds, index, color_bases[index], 1)) {
+          all_fade_complete = false;
+        }
+      }
+      break;
+    case 4:
+      for (int index = 0; index < shape->num_leds; index++) {
+        shape->leds[index] = default_palette->cBlack;
+        color_bases[index] = default_palette->cBlack;
+      }
+      current_position = 0;
+      current_mode = Normal;
+      break;
+    }
+    
+    if (all_fade_complete) {
+        demo_phase++;
+    }
+  }
+
 public:
   StrangerLights(ShapedLED* shape, ColorPalette* default_palette): PatternBase(shape, default_palette) {
     pattern_run_delay = 11;
@@ -70,9 +103,13 @@ public:
       switch (current_mode) {
         case Normal:
           if (primary.flicker(current_position, current_position, shape->leds, 0.1, 1.0, 0.01, false, color_bases, intensity_increment, shape->num_leds)) {
-            nextPosition();
+            if (!nextPosition()) {
+              current_mode = Demogorgon;
+              demo_phase  = 0;
+            }
+          } else {
+            badThingsHappen();
           }
-          badThingsHappen();
           break;
         case Stutter:
           if (effect.flicker(current_position, current_position, shape->leds, primary.getIntensity(), primary.getIntensity() - stutter_amount, 0.01, true, color_bases, intensity_increment, shape->num_leds))
@@ -91,6 +128,9 @@ public:
           if (effect.flicker(0, current_position, shape->leds, 1.0, 0.6, 0.3, true, color_bases, 0.02, shape->num_leds)) {
             current_mode = Normal;
           }
+          break;
+        case Demogorgon:
+          doDemogorgon();
           break;
       }
       FastLED.show(); 

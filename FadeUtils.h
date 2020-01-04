@@ -34,7 +34,10 @@ public:
   }
 
   static CRGB adjustColor(CRGB color, float intensity) {
-    CRGB rval = CRGB((float)color.r * intensity, (float)color.g * intensity, (float)color.b * intensity);
+    CRGB rval = CRGB(
+        min(255,max(0,(float)color.r * intensity)), 
+        min(255,max(0,(float)color.g * intensity)), 
+        min(255,max(0,(float)color.b * intensity)));
     return rval;
   }
   
