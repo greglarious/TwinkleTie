@@ -5,11 +5,15 @@ TL/DR: Rudolph with your tie so bright, turn that thing down before you harm som
 ## Demonstration
 -Short demo of overall functionality and basic parts:
 
-[![Demonstration Video](https://img.youtube.com/vi/xrCQoonOee4/hqdefault.jpg)](https://www.youtube.com/watch?v=xrCQoonOee4)
+[![Demonstration Video](https://img.youtube.com/vi/xrCQoonOee4/default.jpg)](https://www.youtube.com/watch?v=xrCQoonOee4)
 
 -Overview of the LED Patterns:
 
-[![Pattern overview Video](https://img.youtube.com/vi/lUyAfUY4ZbM/hqdefault.jpg)](https://www.youtube.com/watch?v=lUyAfUY4ZbM)
+[![Pattern overview Video](https://img.youtube.com/vi/lUyAfUY4ZbM/default.jpg)](https://www.youtube.com/watch?v=lUyAfUY4ZbM)
+
+-Stranger Lights Pattern:
+
+[![Stranger Lights pattern Video](https://img.youtube.com/vi/v92BPB_iMAA/default.jpg)](https://www.youtube.com/watch?v=v92BPB_iMAA)
 
 ## Schematic
 This schematic is out of date from an older version that used 2 strips. The latest iteration uses just 1.
