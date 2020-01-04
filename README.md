@@ -16,7 +16,7 @@ TL/DR: Rudolph with your tie so bright, turn that thing down before you harm som
 [![Stranger Lights pattern Video](https://img.youtube.com/vi/v92BPB_iMAA/default.jpg)](https://www.youtube.com/watch?v=v92BPB_iMAA)
 
 ## Schematic
-This schematic is out of date from an older version that used 2 strips. The latest iteration uses just 1.
+This schematic shows an older version that used 2 strips but the concept is the same. The latest iteration uses just 1 LED strip.
 <img src="https://github.com/greglarious/TwinkleTie/blob/master/TwinkleTieSchematic.png?raw=true" width="500" height="500" />
 
 ## Parts List:
