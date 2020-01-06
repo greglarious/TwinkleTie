@@ -35,13 +35,13 @@ public:
       }
       if (!done_cane_fade) {
         done_cane_fade = true;
-        for(byte right_idx=shape->bottom_right; right_idx < shape->top_right; right_idx++) {
+        for(int right_idx=shape->bottom_right; right_idx < shape->top_right; right_idx++) {
           int left_idx;
           if (doCircle)
             left_idx = shape->top_left + right_idx;
           else
             left_idx = shape->bottom_left - right_idx;
-          byte colorIndex = (right_idx + cane_offset) % cane_size;
+          int colorIndex = (right_idx + cane_offset) % cane_size;
           CRGB newColor;
           if (colorIndex < cane_size / 2)
             newColor = top_color;

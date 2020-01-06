@@ -3,7 +3,7 @@
 //
 class ColorPalette {  
   CRGB entries[4];
-  byte  num_entries;
+  int  num_entries;
   int intensity;
   
   void updateColors() {
@@ -74,7 +74,7 @@ public:
 //
 class FadeUtils {
 public:
-  static bool fadeTo(CRGB* leds, byte index, CRGB target, byte increment) { 
+  static bool fadeTo(CRGB* leds, int index, CRGB target, int increment) { 
     bool fade_completed= true;
     if (leds[index].r < target.r - increment) {
         leds[index].r+= increment;
@@ -109,9 +109,9 @@ public:
     return fade_completed;
   }
   
-  static bool fadeAllTo(CRGB* leds, int num_leds, CRGB target, byte increment) {
+  static bool fadeAllTo(CRGB* leds, int num_leds, CRGB target, int increment) {
     bool done = true;
-    for(byte idx=0; idx< num_leds; idx++) {
+    for(int idx=0; idx< num_leds; idx++) {
       if(!fadeTo(leds, idx, target, increment)) {
         done = false;
       }
